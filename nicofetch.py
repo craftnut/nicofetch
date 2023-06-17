@@ -28,10 +28,10 @@ if not args.skip_platform:
         platform_fetches.fetch_linux()
     elif sys.platform == "win32":
         platform_fetches.fetch_windows()
-    elif sys.platform == "darwin":
-        platform_fetches.fetch_darwin()
+    elif sys.platform == "freebsdN":
+        platform_fetches.fetch_freebsd()
     else:
-        print("Unsupported platform.")
+        print("Currently unsupported platform.")
 
 # universal  details, should work for every platform
 if not args.platform_only:

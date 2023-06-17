@@ -1,7 +1,7 @@
 # nicofetch
 
 is a universal, no frills fetch script written in Python,
-it should work on Windows, macOS, Linux, and FreeBSD.
+currently it should work on Windows and Linux, with basic support for FreeBSD, and support macOS is work in progress.
 
 # Usage
 
