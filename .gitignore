@@ -1,2 +1,3 @@
 nicofetch old.py
 __pycache__
+.env

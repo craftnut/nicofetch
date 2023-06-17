@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# Nicofetch: The Universal Fetch Script
 
 import os
 import sys
@@ -8,21 +7,21 @@ from argparse import ArgumentParser
 
 import platform_fetches
 
-import math
-
+# launch args
 parser = ArgumentParser()
 parser.add_argument("--skip-platform", action="store_true")
 parser.add_argument("--platform-only", action="store_true")
 args = parser.parse_args()
 
-user = os.getlogin()
-
+# ANSI escape codes:
 class colors:
     blue = "\033[94m"
     red = "\033[91m"
     end = "\033[0m"
     
-# if the user is on linux print related system details first
+print("----------------------")
+    
+# first, fetch platform-specific details:
 if not args.skip_platform:
     if sys.platform == "linux":
         platform_fetches.fetch_linux()
@@ -33,12 +32,14 @@ if not args.skip_platform:
     else:
         print("Currently unsupported platform.")
 
-# universal  details, should work for every platform
+# then, fetch universal non-specific details:
 if not args.platform_only:
     res = f"{os.get_terminal_size().columns}x{os.get_terminal_size().lines}"
-    mem = math.ceil((psutil.virtual_memory()[0])/(1024**3))
+    mem = int((psutil.virtual_memory()[0])*(1/1048576))
+    mem_used = int((psutil.virtual_memory()[3])*(1/1048576))
     mem_usage = psutil.virtual_memory()[2]
 
     print(f"{colors.blue}Terminal Size:{colors.end}", res)
-    print(f"{colors.blue}RAM:{colors.end}", str(mem) + "gb")
-    print(f"{colors.blue}RAM Usage:{colors.end}", str(mem_usage) + "%")
+    print(f"{colors.blue}Memory:{colors.end}", str(mem_used) + "MiB /", str(mem) + "MiB", "(" + str(mem_usage) + "%)")
+
+print("----------------------")
