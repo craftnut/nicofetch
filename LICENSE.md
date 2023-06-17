@@ -1,4 +1,4 @@
-Copyright <YEAR> <COPYRIGHT HOLDER(s)>
+Copyright 2023 craftnut
 
 This project is licensed under the Helium License.
 
