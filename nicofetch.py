@@ -6,6 +6,7 @@ import psutil
 from argparse import ArgumentParser
 
 import platform_fetches
+import shutil
 
 # launch args
 parser = ArgumentParser()
@@ -38,8 +39,14 @@ if not args.platform_only:
     mem = int((psutil.virtual_memory()[0])*(1/1048576))
     mem_used = int((psutil.virtual_memory()[3])*(1/1048576))
     mem_usage = psutil.virtual_memory()[2]
+    
+    disk_space = int((shutil.disk_usage('/')[0])*(9.313225*(10**-10)))
+    disk_usage = round((shutil.disk_usage('/')[1])*(9.313225*(10**-10)), 2)
+    
+    disk_percent = (round(((int(disk_usage)/disk_space)*100), 2))
 
-    print(f"{colors.blue}Terminal Size:{colors.end}", res)
-    print(f"{colors.blue}Memory:{colors.end}", str(mem_used) + "MiB /", str(mem) + "MiB", "(" + str(mem_usage) + "%)")
+    print(f"{colors.blue}Disk (/):{colors.end} {disk_usage}GiB / {disk_space}GiB ({disk_percent}%)")
+    print(f"{colors.blue}Memory:{colors.end} {mem_used}MiB / {mem}MiB ({mem_usage}%)")
+    print(f"{colors.blue}Terminal Size:{colors.end} {res}")
 
 print("----------------------")

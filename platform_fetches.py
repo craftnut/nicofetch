@@ -18,7 +18,7 @@ machine = platform.uname()[4]
 def fetch_linux():
     import subprocess
     import distro
-
+    
     linux_distro = distro.id().capitalize()
     linux_version = distro.version()
 
@@ -27,7 +27,7 @@ def fetch_linux():
     session = os.environ['XDG_SESSION_TYPE']
     cur = os.environ['XCURSOR_THEME']
     cur_size = os.environ['XCURSOR_SIZE']
-
+    
     hostname = platform.uname()[1]
     kernel = platform.uname()[2]
 
@@ -37,18 +37,18 @@ def fetch_linux():
         up_hours = int(strftime("%H", gmtime(uptime)))
         up_minutes = int(strftime("%M", gmtime(uptime)))
         
-    print(f"{colors.red}{user}" + "@" + f"{hostname}{colors.end}")
+    print(f"{colors.red}{user}{colors.end}@{colors.red}{hostname}{colors.end}")
     
     print("----------------------")
     
-    print(f"{colors.blue}OS:{colors.end}", linux_distro, system, machine)
-    print(f"{colors.blue}Version:{colors.end}", linux_version)
-    print(f"{colors.blue}Kernel:{colors.end}", kernel)
-    print(f"{colors.blue}Uptime:{colors.end}", up_hours, "Hours,", up_minutes, "Minutes")
-    print(f"{colors.blue}Shell:{colors.end}", shell)
-    print(f"{colors.blue}DE:{colors.end}", desktop)
-    print(f"{colors.blue}Cursor:{colors.end}", cur, f"({cur_size}px)")
-    print(f"{colors.blue}Session:{colors.end}", session)
+    print(f"{colors.blue}OS:{colors.end} {linux_distro} {system} {machine}")
+    print(f"{colors.blue}Version:{colors.end} {linux_version}")
+    print(f"{colors.blue}Kernel:{colors.end} {kernel}")
+    print(f"{colors.blue}Uptime:{colors.end} {up_hours} Hours, {up_minutes} Minutes")
+    print(f"{colors.blue}Shell:{colors.end} {shell}")
+    print(f"{colors.blue}DE:{colors.end} {desktop}")
+    print(f"{colors.blue}Cursor:{colors.end} {cur} ({cur_size}px)")
+    print(f"{colors.blue}Session:{colors.end} {session}")
     
     
     cpu_info = subprocess.check_output("cat /proc/cpuinfo", shell=True).decode().strip()
@@ -75,12 +75,18 @@ def fetch_windows():
     release = platform.uname()[2]
     version = platform.uname()[3]
     
+    userdomain = os.environ['USERDOMAIN']
+    
     cpu = platform.processor()
     
-    print(f"{colors.blue}OS:{colors.end}", system, release, machine)
-    print(f"{colors.blue}Version:{colors.end}", version)
-    print(f"{colors.blue}Uptime:{colors.end}", up_hours, "Hours,", up_minutes, "Minutes")
-    print(f"{colors.blue}CPU:{colors.end}", cpu) # should replace with way to get CPU model name
+    print(f"{colors.red}{user}{colors.end}@{colors.red}{userdomain}{colors.end}")
+    
+    print("----------------------")
+    
+    print(f"{colors.blue}OS:{colors.end} {system} {release} {machine}")
+    print(f"{colors.blue}Version:{colors.end} {version}")
+    print(f"{colors.blue}Uptime:{colors.end} {up_hours} Hours, {up_minutes} Minutes")
+    print(f"{colors.blue}CPU:{colors.end} {cpu}") # should replace with way to get CPU model name
 
 # freebsd-specific fetch:
 def fetch_freebsd():
@@ -92,7 +98,7 @@ def fetch_freebsd():
     
     cpu = platform.processor()
     
-    print(f"{colors.blue}OS:{colors.end}", system, release, machine)
-    print(f"{colors.blue}Version:{colors.end}", version)
+    print(f"{colors.blue}OS:{colors.end} {system} {release} {machine}")
+    print(f"{colors.blue}Version:{colors.end} {version}")
     print("Uptime:", subprocess.check_output("uptime")) # prints result of uptime command, doesn't look very good, should be replaced
-    print(f"{colors.blue}CPU:{colors.end}", cpu)
+    print(f"{colors.blue}CPU:{colors.end} {cpu}")
