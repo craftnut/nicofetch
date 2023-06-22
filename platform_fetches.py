@@ -21,9 +21,17 @@ def fetch_linux():
     
     linux_distro = distro.id().capitalize()
     linux_version = distro.version()
-
+    
+    desktop = os.environ['XDG_CURRENT_DESKTOP'] 
+    desktop_session = os.environ.get('DESKTOP_SESSION')
+       
+    if 'wayland' in desktop_session:
+        de = f"{desktop} {(desktop_session.replace('wayland', '').capitalize())}"
+    else:
+        de = f"{desktop} {desktop_session.capitalize()}"   
+    
+    home = os.environ['HOME']
     shell = os.environ['SHELL']
-    desktop = (os.environ['XDG_CURRENT_DESKTOP'] + " " + os.environ.get('DESKTOP_SESSION').capitalize())
     session = os.environ['XDG_SESSION_TYPE']
     cur = os.environ['XCURSOR_THEME']
     cur_size = os.environ['XCURSOR_SIZE']
@@ -42,15 +50,18 @@ def fetch_linux():
     print("----------------------")
     
     print(f"{colors.blue}OS:{colors.end} {linux_distro} {system} {machine}")
-    print(f"{colors.blue}Version:{colors.end} {linux_version}")
+    
+    if linux_version:
+        print(f"{colors.blue}Version:{colors.end} {linux_version}")
+
     print(f"{colors.blue}Kernel:{colors.end} {kernel}")
     print(f"{colors.blue}Uptime:{colors.end} {up_hours} Hours, {up_minutes} Minutes")
     print(f"{colors.blue}Shell:{colors.end} {shell}")
-    print(f"{colors.blue}DE:{colors.end} {desktop}")
+    print(f"{colors.blue}DE:{colors.end} {de}")
     print(f"{colors.blue}Cursor:{colors.end} {cur} ({cur_size}px)")
     print(f"{colors.blue}Session:{colors.end} {session}")
     
-    
+    # get cpu model and vendor
     cpu_info = subprocess.check_output("cat /proc/cpuinfo", shell=True).decode().strip()
     for line in cpu_info.split("\n"):
         if "model name" in line:
@@ -60,6 +71,7 @@ def fetch_linux():
 
     print(f"{colors.blue}CPU:{colors.end}", str(cpu_model).strip(repr("('model name\t: ")).strip("', 1)"))
     print(f"{colors.blue}CPU Vendor:{colors.end}", str(cpu_vendor).strip(repr("('vendor_id\t: ")).strip("', 1)"))
+    print(f"{colors.blue}Home Directory:{colors.end} {home}")
     
 # win32-specific fetch:
 def fetch_windows():
@@ -74,10 +86,9 @@ def fetch_windows():
     
     release = platform.uname()[2]
     version = platform.uname()[3]
+    cpu = platform.processor()
     
     userdomain = os.environ['USERDOMAIN']
-    
-    cpu = platform.processor()
     
     print(f"{colors.red}{user}{colors.end}@{colors.red}{userdomain}{colors.end}")
     
