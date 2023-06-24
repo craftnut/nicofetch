@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 import platform
 from time import strftime
@@ -22,19 +24,20 @@ def fetch_linux():
     linux_distro = distro.id().capitalize()
     linux_version = distro.version()
     
-    desktop = os.environ['XDG_CURRENT_DESKTOP'] 
-    desktop_session = os.environ.get('DESKTOP_SESSION')
-       
-    if 'wayland' in desktop_session:
-        de = f"{desktop} {(desktop_session.replace('wayland', '').capitalize())}"
-    else:
-        de = f"{desktop} {desktop_session.capitalize()}"   
-    
+    desktop = os.environ['XDG_CURRENT_DESKTOP']
     home = os.environ['HOME']
     shell = os.environ['SHELL']
     session = os.environ['XDG_SESSION_TYPE']
-    cur = os.environ['XCURSOR_THEME']
-    cur_size = os.environ['XCURSOR_SIZE']
+    
+    if not "Budgie" in desktop:
+        cur = os.environ['XCURSOR_THEME']
+        cur_size = os.environ['XCURSOR_SIZE']
+        desktop_session = os.environ.get('DESKTOP_SESSION')
+        
+        if 'wayland' in desktop_session:
+            de = f"{desktop} {(desktop_session.replace('wayland', '').capitalize())}"
+        else:
+            de = f"{desktop} {desktop_session.capitalize()}"   
     
     hostname = platform.uname()[1]
     kernel = platform.uname()[2]
@@ -57,8 +60,15 @@ def fetch_linux():
     print(f"{colors.blue}Kernel:{colors.end} {kernel}")
     print(f"{colors.blue}Uptime:{colors.end} {up_hours} Hours, {up_minutes} Minutes")
     print(f"{colors.blue}Shell:{colors.end} {shell}")
-    print(f"{colors.blue}DE:{colors.end} {de}")
-    print(f"{colors.blue}Cursor:{colors.end} {cur} ({cur_size}px)")
+    
+    if not 'Budige' in desktop:
+        print(f"{colors.blue}DE:{colors.end} {desktop}")
+    else:
+        print(f"{colors.blue}DE:{colors.end} {de}")
+    
+    if 'cur' in locals():
+        print(f"{colors.blue}Cursor:{colors.end} {cur} ({cur_size}px)")
+    
     print(f"{colors.blue}Session:{colors.end} {session}")
     
     # get cpu model and vendor
